@@ -10,7 +10,7 @@ const cors = require('cors');
 
 
 const app = express()
-const PORT= process.env.PORT || 5001;
+const PORT= process.env.PORT || 8850;
 dotEnv.config();
 
 mongoose.connect(process.env.MONGO_URI)
@@ -26,10 +26,10 @@ app.use('/uploads',express.static('uploads'));
 app.listen(PORT,()=>{
     console.log(`server started at ${PORT}`);
 })
-// app.use('/',(req,res)=>{
-//     res.send("Hello Foody")
-// })
-app.use('/', (req, res) => {
+app.use('/',(req,res)=>{
+    res.send("Hello Foody")
+})
+app.use((req, res) => {
     res.status(404).json({ error: 'Route not found' });
   });
   

@@ -24,6 +24,10 @@ const storage = multer.diskStorage({
         if(!vendor){
             res.status(404).json({message: "Vendor not found"})
         }
+        if(vendor.firm.length>0)
+          {
+           return res.status(400).json({message:"vendor can have only one firm"})
+          }
     const firm = new Firm({
         firmname,
         area, 
@@ -34,9 +38,11 @@ const storage = multer.diskStorage({
         vendor: vendor._id
     })
    const savedFirm = await firm.save();
+   const firmId = savedFirm._id
    vendor.firm.push(savedFirm);
    await vendor.save();
-    return res.status(200).json({message: "Firm added Scuccessfully"})
+   
+    return res.status(200).json({message: "Firm added Scuccessfully",firmId})
 }
 catch(error){
  console.log(error);

@@ -6,7 +6,7 @@ const productSchema = new mongoose.Schema({
     },
     price:{
         type:String,
-        required:true,
+        required:true
     },
     category:{
         type:[
@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema({
         type:String
     },
     bestSeller:{
-        type:String
+        type:Boolean
     },
     description:{
         type:String
