@@ -46,7 +46,11 @@ const storage = multer.diskStorage({
     const getProductByFirm = async(req, res)=>{
       try{
         const firmId = req.params.firmId;
+        if (!firmId || firmId === 'null') { // Check if firmId is missing or explicitly 'null'
+          return res.status(400).json({ error: "Firm ID is required" });
+      }
         const firm = await Firm.findById(firmId);
+        console.log(firm);
         if(!firm)
         {
           return res.status(404).json({error: "No Firm Found"});
@@ -60,28 +64,12 @@ const storage = multer.diskStorage({
         res.status(500).json({message: "Internal Server Error"})
       }
     }
-    // const deleteProductById = async(req, res)=>{
-    //   try{
-    //     const productId = req.params.productId;
-    //     const deletedProduct = await Product.findByIdAndDelete(productId);
-    //     if(!deletedProduct)
-    //     {
-    //       return res.status(404).json({error: "No Product Found"});
-    //     }
-    //     else{
-    //       console.log("Deleted Product");
-    //     }
-    //   }
-    //   catch(error)
-    //   {
-    //     console.log(error);
-    //     res.status(500).json({message: "Internal Server Error"})
-    //   }
-    // }
-
     const deleteProductById = async (req, res) => {
       try {
         const productId = req.params.productId;
+        if (!productId) {
+          return res.status(400).json({ error: "Product ID is required" });
+      }
         const deletedProduct = await Product.findByIdAndDelete(productId);
        
         if (!deletedProduct) {

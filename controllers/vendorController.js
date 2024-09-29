@@ -64,7 +64,7 @@ const getAllVendors = async(req, res)=>{
 }
 
 const getVendorById = async(req, res)=>{
-    const vendorId = req.params.sunday;
+    const vendorId = req.params.vendorId;
     console.log(vendorId);
     try{
         const vendor = await Vendor.findById(vendorId).populate('firm');
@@ -73,9 +73,20 @@ const getVendorById = async(req, res)=>{
             console.log(vendor);
             return res.status(404).json({message: "Vendor not Found"})
         }
-        const vendorFirmId = vendor.firm[0]._id;
-        res.status(200).json({vendorId, vendorFirmId, vendor})
+        // const vendorFirmId = vendor.firm[0]._id;
+        // res.status(200).json({vendorId, vendorFirmId, vendor})
+        // console.log(vendorFirmId);
+        let vendorFirmId;
+        if (vendor.firm && vendor.firm.length > 0) {
+            vendorFirmId = vendor.firm[0]._id; // Safely access _id
+        } else {
+            vendorFirmId = null; // or handle as appropriate
+        }
+
+        res.status(200).json({ vendorId, vendorFirmId, vendor });
         console.log(vendorFirmId);
+
+    
     }
     catch(error)
     {

@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
     const image = req.file ? req.file.filename: undefined ;
     
     const vendor = await Vendor.findById(req.vendorId);
+    console.log(vendor);
         if(!vendor){
             res.status(404).json({message: "Vendor not found"})
         }
