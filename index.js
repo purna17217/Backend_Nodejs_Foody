@@ -5,12 +5,13 @@ const vendorRoutes = require('./routes/vendorRoutes');
 const bodyparser = require('body-parser');
 const firmRoutes = require('./routes/firmRoutes');
 const productRoutes = require('./routes/productRoutes');
+const customerRoutes = require('./routes/customerRoutes')
 const path = require('path');
 const cors = require('cors');
 
 
 const app = express()
-const PORT= process.env.PORT || 8850;
+const PORT= process.env.PORT || 6003;
 dotEnv.config();
 
 mongoose.connect(process.env.MONGO_URI)
@@ -22,6 +23,7 @@ app.use(bodyparser.json());
 app.use('/vendor',vendorRoutes);
 app.use('/firm',firmRoutes);
 app.use('/product',productRoutes);
+app.use('/customer', customerRoutes);
 app.use('/uploads',express.static('uploads'));
 app.listen(PORT,()=>{
     console.log(`server started at ${PORT}`);

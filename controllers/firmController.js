@@ -2,16 +2,28 @@ const Firm = require('../models/Firm');
 const Vendor = require('../models/Vendor');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, 'uploads/'); // Directory to store uploaded images
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to filename
+//     }
+//   });
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'uploads/'); // Directory to store uploaded images
-    },
-    filename: function (req, file, cb) {
+  destination: function (req, file, cb) {
+      const uploadPath = 'uploads/';
+      if (!fs.existsSync(uploadPath)) {
+          fs.mkdirSync(uploadPath, { recursive: true }); // Create folder if it doesn't exist
+      }
+      cb(null, uploadPath); // Directory to store uploaded images
+  },
+  filename: function (req, file, cb) {
       cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to filename
-    }
-  });
- 
+  }
+});
   const upload = multer({ storage: storage });
   
   const addFirm = async(req, res)=>{

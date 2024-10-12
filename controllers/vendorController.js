@@ -2,6 +2,7 @@ const Vendor = require('../models/Vendor');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const dotEnv = require('dotenv');
+const mongoose = require('mongoose'); // Import mongoose
 
 dotEnv.config();
 
@@ -34,6 +35,8 @@ const vendorRegister = async(req,res)=>{
 
 const vendorLogin = async(req,res)=>{
     const {email, password} = req.body;
+    console.log("Received Email:", email); // Log the received values
+    console.log("Received Password:", password);
     try{
         const vendor = await Vendor.findOne({email});
         if(!vendor || !(await bcrypt.compare(password, vendor.password))){
@@ -66,6 +69,9 @@ const getAllVendors = async(req, res)=>{
 const getVendorById = async(req, res)=>{
     const vendorId = req.params.vendorId;
     console.log(vendorId);
+    if (!mongoose.isValidObjectId(vendorId)) {
+        return res.status(400).json({ message: "Invalid Vendor ID" });
+    }
     try{
         const vendor = await Vendor.findById(vendorId).populate('firm');
         if(!vendor)
